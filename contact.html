@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — LexFirm</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ════ EMERGENCY BAR ════ */
+    .emergency {
+      background:var(--gold);
+      padding:16px 64px;
+      display:flex; justify-content:space-between; align-items:center;
+      gap:24px; flex-wrap:wrap;
+    }
+    .emergency p {
+      font-size:13px; font-weight:600;
+      color:var(--navy); letter-spacing:.05em;
+    }
+    .emergency span { font-size:12px; color:rgba(11,24,38,.65); margin-left:10px; font-weight:400; }
+    .emergency a {
+      background:var(--navy); color:var(--gold);
+      padding:10px 26px;
+      font-size:var(--fs-xs); font-weight:600;
+      letter-spacing:var(--ls-wide); text-transform:uppercase;
+      text-decoration:none; white-space:nowrap;
+      transition:background .25s;
+    }
+    .emergency a:hover { background:var(--navy-3); }
+
+    /* ════ CONTACT LAYOUT ════ */
+    .contact-wrap {
+      display:grid; grid-template-columns:1fr 1.6fr;
+      gap:0;
+      min-height:700px;
+    }
+    .contact-sidebar {
+      background:var(--navy-3);
+      padding:72px 52px;
+      border-right:1px solid var(--gold-dim);
+    }
+    .contact-main {
+      background:var(--navy-2);
+      padding:72px 60px;
+    }
+
+    /* ════ SIDEBAR CARDS ════ */
+    .info-cards { display:flex; flex-direction:column; gap:2px; margin:36px 0; }
+    .ic {
+      background:var(--navy-4);
+      padding:22px 24px;
+      display:flex; align-items:flex-start; gap:18px;
+      border-left:2px solid transparent;
+      transition:border-color .3s;
+    }
+    .ic:hover { border-left-color:var(--gold); }
+    .ic-icon {
+      width:40px; height:40px; flex-shrink:0;
+      border:1px solid var(--gold-dim);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--gold);
+    }
+    .ic-icon svg { width:18px; height:18px; }
+    .ic-label {
+      font-size:9px; letter-spacing:.2em;
+      text-transform:uppercase; color:var(--slate);
+      margin-bottom:3px;
+    }
+    .ic-value { font-size:13px; font-weight:500; color:var(--white); }
+    .ic-sub { font-size:11px; color:var(--slate); margin-top:2px; }
+
+    /* hours */
+    .hours-title {
+      font-family:'Playfair Display',serif;
+      font-size:18px; font-weight:600; color:var(--white);
+      margin-bottom:16px;
+    }
+    .hours-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
+    .hg-item { background:var(--navy-4); padding:14px 18px; }
+    .hg-day { font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--slate); margin-bottom:3px; }
+    .hg-time { font-size:12px; color:var(--gold); font-weight:600; }
+
+    /* ════ FORM ════ */
+    .form-header { margin-bottom:36px; }
+    .form-title {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(24px,3vw,38px);
+      font-weight:600; color:var(--white); margin-top:14px;
+    }
+    .form-title em { color:var(--gold); font-style:italic; }
+    .form-desc { font-size:13px; line-height:1.8; color:var(--slate); margin-top:12px; }
+
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .form-group { display:flex; flex-direction:column; gap:8px; }
+    .form-group.full { grid-column:1/-1; }
+    label {
+      font-size:10px; letter-spacing:.2em;
+      text-transform:uppercase; color:var(--gold);
+      font-weight:600;
+    }
+    input, select, textarea {
+      background:var(--navy-4);
+      border:1px solid rgba(201,168,76,.15);
+      color:var(--cream);
+      padding:14px 18px;
+      font-family:'Raleway',sans-serif;
+      font-size:13px;
+      outline:none;
+      transition:border-color .3s, box-shadow .3s;
+      width:100%;
+      appearance:none; -webkit-appearance:none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color:var(--gold);
+      box-shadow:0 0 0 3px rgba(201,168,76,.08);
+    }
+    input::placeholder, textarea::placeholder { color:var(--slate); }
+    select option { background:var(--navy); }
+    textarea { height:140px; resize:vertical; }
+
+    .privacy-check {
+      display:flex; align-items:flex-start; gap:12px;
+      margin-top:6px;
+    }
+    .privacy-check input[type="checkbox"] {
+      width:18px; height:18px; flex-shrink:0;
+      accent-color:var(--gold); cursor:pointer;
+      margin-top:2px; padding:0;
+    }
+    .privacy-check label {
+      font-size:12px; line-height:1.65;
+      color:var(--slate); cursor:pointer;
+      letter-spacing:0; text-transform:none; font-weight:400;
+    }
+    .privacy-check a { color:var(--gold); text-decoration:none; }
+
+    .form-submit {
+      background:var(--gold); color:var(--navy);
+      border:none; cursor:pointer; width:100%;
+      padding:16px; margin-top:8px;
+      font-family:'Raleway',sans-serif;
+      font-size:var(--fs-xs); font-weight:600;
+      letter-spacing:var(--ls-wide); text-transform:uppercase;
+      transition:all .3s var(--ease);
+    }
+    .form-submit:hover { background:var(--gold-lt); transform:translateY(-1px); }
+    .form-submit:disabled { background:var(--navy-3); color:var(--slate); cursor:default; transform:none; }
+
+    #formSuccess {
+      display:none; flex-direction:column;
+      align-items:center; justify-content:center;
+      min-height:420px; text-align:center;
+      gap:20px;
+    }
+    .success-icon {
+      width:72px; height:72px; border:2px solid var(--gold);
+      border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--gold); font-size:28px;
+    }
+    #formSuccess h3 {
+      font-family:'Playfair Display',serif;
+      font-size:28px; color:var(--white);
+    }
+    #formSuccess p { font-size:14px; color:var(--slate); line-height:1.8; max-width:360px; }
+
+    /* ════ MAP ════ */
+    .map-wrap { position:relative; }
+    .map-wrap iframe {
+      width:100%; height:440px; display:block; border:none;
+      filter:contrast(1.1) saturate(0.85);
+    }
+    .map-info-bar {
+      background:var(--navy-3);
+      border-top:1px solid var(--gold-dim);
+      padding:24px 64px;
+      display:flex; gap:40px; flex-wrap:wrap;
+      justify-content:space-between; align-items:center;
+    }
+    .mi { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--slate); }
+    .mi strong { color:var(--gold); margin-right:2px; }
+
+    /* ════ RESPONSIVE ════ */
+    @media(max-width:1100px){
+      .contact-wrap { grid-template-columns:1fr; }
+      .contact-sidebar { border-right:none; border-bottom:1px solid var(--gold-dim); padding:52px 36px; }
+      .contact-main { padding:52px 36px; }
+      .emergency { padding:14px 36px; }
+      .map-info-bar { padding:20px 36px; }
+    }
+    @media(max-width:640px){
+      .form-grid { grid-template-columns:1fr; }
+      .hours-grid { grid-template-columns:1fr; }
+      .emergency { flex-direction:column; text-align:center; }
+      .map-info-bar { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mobile-nav">
+  <button class="mobile-nav-close">✕</button>
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="services.html">Practice Areas</a><a href="contact.html">Contact</a>
+</div>
+
+<div class="topbar">
+  <div class="tb-left"><span>📞 +1 (234) 567-8900</span><span>✉ info@lexfirm.com</span></div>
+  <div class="tb-right"><span>📍 123 Justice Way, New York, NY 10001</span><div class="tb-social"><a href="#">in</a><a href="#">fb</a></div></div>
+</div>
+
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-mark"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><line x1="18" y1="4" x2="18" y2="32" stroke="#c9a84c" stroke-width="1.5"/><line x1="6" y1="16" x2="30" y2="16" stroke="#c9a84c" stroke-width="1.5"/><circle cx="8" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/><circle cx="28" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/></svg></div>
+    <div class="logo-text"><span class="logo-name">ROBERT K. NDUNGU</span><span class="logo-sub">&Co.Advocates</span></div>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="services.html">Practice Areas</a>
+    <a href="about.html#team">Attorneys</a>
+    <a href="contact.html" class="active">Contact</a>
+  </nav>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+</header>
+
+<!-- EMERGENCY BAR 
+<div class="emergency">
+  <p>🔴 Need Urgent Legal Help?<span>Emergency consultations available 24/7.</span></p>
+  <a href="tel:+12345678900">📞 Call Now: +1 (234) 567-8900</a>
+</div>
+-->
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>Contact</div>
+  <h1 class="display-title fade-up">Contact <em>Us</em></h1>
+  <div class="gold-rule fade-up-2"></div>
+  <p class="lead fade-up-3">Reach out today for a free, confidential consultation. We're here to help you navigate every legal challenge.</p>
+</div>
+
+<!-- CONTACT MAIN -->
+<div class="contact-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="contact-sidebar">
+    <div class="eyebrow">Get in Touch</div>
+    <h2 class="display-title" style="font-size:clamp(24px,2.8vw,38px)">We're Here to <em>Help</em></h2>
+    <p style="font-size:13px;line-height:1.85;color:var(--slate);margin-top:16px">Whether you're facing an urgent legal matter or simply need guidance, our attorneys are ready to listen. We respond within 24 hours.</p>
+
+    <div class="info-cards">
+      <div class="ic">
+        <div class="ic-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.09 5.18 2 2 0 015.07 3h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L9.09 10.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div>
+        <div>
+          <div class="ic-label">Phone</div>
+          <div class="ic-value">+254 722522441</div>
+          <div class="ic-sub">Mon–Fri, 8:30am – 5pm </div>
+        </div>
+      </div>
+      <div class="ic">
+        <div class="ic-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div>
+          <div class="ic-label">Email</div>
+          <div class="ic-value">info@lexfirm.com</div>
+          <div class="ic-sub">We respond within 24 hours</div>
+        </div>
+      </div>
+      <div class="ic">
+        <div class="ic-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div>
+          <div class="ic-label">Office</div>
+          <div class="ic-value">Utawala Complex,Eastern Bypass</div>
+          <div class="ic-sub">Nairobi,Kenya</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hours-title">Office Hours</div>
+    <div class="hours-grid">
+      <div class="hg-item"><div class="hg-day">Mon – Friday</div><div class="hg-time">8:30 AM – 5:00 PM</div></div>
+      <div class="hg-item"><div class="hg-day">Saturday</div><div class="hg-time">Closed</div></div>
+      <div class="hg-item"><div class="hg-day">Sunday</div><div class="hg-time">Closed</div></div>
+      <div class="hg-item"><div class="hg-day">Emergency</div><div class="hg-time" style="color:var(--cream)">24/7 Hotline</div></div>
+    </div>
+  </aside>
+
+  <!-- FORM -->
+  <div class="contact-main">
+    <div class="form-header" data-reveal>
+      <div class="eyebrow">For Consultation</div>
+      <h2 class="form-title">Send Us a <em>Message</em></h2>
+      <p class="form-desc">Fill in the form below and one of our attorneys will be in touch shortly. All information is strictly confidential.</p>
+    </div>
+
+    <form id="contactForm" novalidate data-reveal>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="fname">First Name *</label>
+          <input type="text" id="fname" name="fname" placeholder="John" required>
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name *</label>
+          <input type="text" id="lname" name="lname" placeholder="Doe" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" placeholder="john@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="+1 (234) 567-0000">
+        </div>
+        <div class="form-group full">
+          <label for="practice">Practice Area</label>
+          <select id="practice" name="practice">
+            <option value="" disabled selected>Select a practice area…</option>
+            <option>Criminal Defense</option>
+            <option>Family Law</option>
+            <option>Real Estate Law</option>
+            <option>Corporate Law</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="subject">Subject *</label>
+          <input type="text" id="subject" name="subject" placeholder="Brief description of your legal matter" required>
+        </div>
+        <div class="form-group full">
+          <label for="message">Message *</label>
+          <textarea id="message" name="message" placeholder="Please describe your legal situation and how we can help. All information is strictly confidential and protected by attorney-client privilege." required></textarea>
+        </div>
+        <div class="form-group full privacy-check">
+          <input type="checkbox" id="privacy" name="privacy" required>
+          <label for="privacy" style="font-size:12px;letter-spacing:0;text-transform:none;font-weight:400;color:var(--slate)">I understand that submitting this form does not create an attorney-client relationship, and that any information I provide is subject to LexFirm's <a href="#">Privacy Policy</a> and will be kept confidential.</label>
+        </div>
+      </div>
+      <button type="submit" class="form-submit">Send Message &amp; Request Consultation →</button>
+    </form>
+
+    <div id="formSuccess">
+      <div class="success-icon">✓</div>
+      <h3>Message Sent!</h3>
+      <p>Thank you for reaching out. One of our attorneys will contact you within 24 hours. Your information is strictly confidential.</p>
+      <a href="index.html" class="btn btn-outline" style="margin-top:8px">Return Home</a>
+    </div>
+  </div>
+</div>
+
+<!-- GOOGLE MAP -->
+<div class="map-wrap">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215573291154!2d-73.99565148459404!3d40.75024037932629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf5c1654f3%3A0xc80f9cfce5383d5d!2sNew%20York%2C%20NY%2010001!5e0!3m2!1sen!2sus!4v1680000000000!5m2!1sen!2sus"
+    allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+    title="LexFirm Office Location">
+  </iframe>
+</div>
+<div class="map-info-bar">
+  <div class="mi"><strong>📍</strong> Utawala Complex, Eastern Bypass</div>
+  <div class="mi"><strong>🚇</strong>Kimsons Plaza 2nd Floor</div>
+  <div class="mi"><strong>♿</strong> Fully accessible</div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-about">
+      <a href="index.html" class="logo" style="display:inline-flex"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 36 36" fill="none"><line x1="18" y1="4" x2="18" y2="32" stroke="#c9a84c" stroke-width="1.5"/><line x1="6" y1="16" x2="30" y2="16" stroke="#c9a84c" stroke-width="1.5"/><circle cx="8" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/><circle cx"28" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/></svg></div><div class="logo-text" style="margin-left:12px"><span class="logo-name">ROBERT K. NDUNGU</span><span class="logo-sub">& Co. Advocates</span></div></a>
+      <p>A client-focused law firm providing exceptional legal representation across New York since 1998.</p>
+      <div class="footer-socials"><a href="#">in</a><a href="#">f</a><a href="#">tw</a></div>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Practice Areas</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Practice Areas</h4><ul><li><a href="services.html#criminal">Criminal Defense</a></li><li><a href="services.html#family">Family Law</a></li><li><a href="services.html#realestate">Real Estate Law</a></li><li><a href="services.html#corporate">Corporate Law</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+12345678900">+254 7225 22441</a></li><li><a href="mailto:info@lexfirm.com">info@lexfirm.com</a></li><li><a href="#">Nairobi, Kenya</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 ROBERT K. NDUNGU & Co. Advocates. All rights reserved.</span><span><a href="#">Privacy</a> · <a href="#">Terms</a></span></div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  // Enhanced form validation
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fields = ['fname','lname','email','subject','message'];
+    let valid = true;
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.style.borderColor = 'rgba(201,100,100,.6)';
+        valid = false;
+      } else {
+        el.style.borderColor = '';
+      }
+    });
+    if (!document.getElementById('privacy').checked) {
+      valid = false;
+      document.querySelector('.privacy-check label').style.color = 'rgba(201,100,100,.8)';
+    }
+    if (!valid) return;
+    const btn = this.querySelector('.form-submit');
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    setTimeout(() => {
+      this.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'flex';
+    }, 1300);
+  });
+
+  // Reset field error on input
+  document.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('input', () => { el.style.borderColor = ''; });
+  });
+</script>
+</body>
+</html>

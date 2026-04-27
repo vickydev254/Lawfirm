@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — LexFirm</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ════ OVERVIEW ════ */
+    .overview-grid {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:80px; align-items:start;
+    }
+    .overview-stats {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:2px;
+    }
+    .os-card {
+      background:var(--navy-3);
+      border-top:2px solid var(--gold);
+      padding:36px 28px;
+    }
+    .os-num {
+      font-family:'Playfair Display',serif;
+      font-size:52px; font-weight:700;
+      color:var(--gold); line-height:1;
+    }
+    .os-lbl {
+      font-size:10px; letter-spacing:.2em;
+      text-transform:uppercase; color:var(--slate);
+      margin-top:8px;
+    }
+    .quote-block {
+      border-left:3px solid var(--gold);
+      padding:20px 24px; margin:32px 0;
+      background:rgba(201,168,76,.04);
+    }
+    .quote-block p {
+      font-family:'Playfair Display',serif;
+      font-size:19px; font-style:italic;
+      line-height:1.65; color:var(--cream);
+    }
+    .overview-text .lead { max-width:100%; }
+
+    /* ════ VALUES ════ */
+    .values-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:2px;
+    }
+    .value-card {
+      background:var(--navy-4);
+      padding:52px 36px;
+      border-bottom:3px solid transparent;
+      transition:all .4s var(--ease);
+    }
+    .value-card:hover {
+      border-bottom-color:var(--gold);
+      background:var(--navy-3);
+      transform:translateY(-4px);
+    }
+    .vc-icon {
+      width:60px; height:60px;
+      border:1px solid var(--gold-dim);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--gold); margin-bottom:28px;
+      transition:background .3s, border-color .3s;
+    }
+    .value-card:hover .vc-icon {
+      background:var(--gold-dim); border-color:var(--gold);
+    }
+    .vc-icon svg { width:28px; height:28px; }
+    .vc-title {
+      font-family:'Playfair Display',serif;
+      font-size:22px; font-weight:600;
+      color:var(--white); margin-bottom:14px;
+    }
+    .vc-desc { font-size:13px; line-height:1.8; color:var(--slate); }
+
+    /* ════ TEAM ════ */
+    .team-grid {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:2px;
+    }
+    .attorney {
+      background:var(--navy-3);
+      overflow:hidden; position:relative;
+      transition:transform .4s var(--ease);
+    }
+    .attorney:hover { transform:translateY(-8px); box-shadow:0 20px 60px rgba(0,0,0,.5); }
+    .attorney-img-wrap { position:relative; overflow:hidden; height:320px; }
+    .attorney-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform .5s var(--ease); }
+    .attorney:hover .attorney-img-wrap img { transform:scale(1.07); }
+    .attorney-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(11,24,38,.85) 0%, transparent 60%);
+      opacity:0; transition:opacity .4s;
+      display:flex; align-items:flex-end; padding:20px;
+    }
+    .attorney:hover .attorney-overlay { opacity:1; }
+    .ao-contact {
+      border:1px solid var(--gold); color:var(--gold);
+      padding:8px 20px; font-size:10px;
+      letter-spacing:.15em; text-transform:uppercase;
+      text-decoration:none; transition:all .25s;
+    }
+    .ao-contact:hover { background:var(--gold); color:var(--navy); }
+    .attorney-info { padding:24px 28px; }
+    .attorney-name {
+      font-family:'Playfair Display',serif;
+      font-size:20px; font-weight:600; color:var(--white);
+    }
+    .attorney-role {
+      font-size:10px; letter-spacing:.15em;
+      text-transform:uppercase; color:var(--gold);
+      margin-top:4px;
+    }
+    .attorney-spec {
+      font-size:12px; color:var(--slate);
+      margin-top:8px; line-height:1.6;
+    }
+
+    /* ════ TIMELINE ════ */
+    .timeline {
+      max-width:820px; margin:56px auto 0;
+      position:relative;
+    }
+    .timeline::before {
+      content:''; position:absolute;
+      left:50%; top:0; bottom:0; width:1px;
+      background:linear-gradient(to bottom, transparent, var(--gold-dim) 10%, var(--gold-dim) 90%, transparent);
+      transform:translateX(-50%);
+    }
+    .tl-item {
+      display:grid; grid-template-columns:1fr 64px 1fr;
+      gap:0; margin-bottom:52px; align-items:start;
+    }
+    .tl-left { padding-right:36px; text-align:right; }
+    .tl-right { padding-left:36px; }
+    .tl-center { display:flex; flex-direction:column; align-items:center; padding-top:6px; }
+    .tl-dot {
+      width:14px; height:14px;
+      background:var(--gold);
+      border:3px solid var(--navy-2);
+      border-radius:50%; flex-shrink:0;
+      box-shadow:0 0 0 4px var(--gold-dim);
+    }
+    .tl-year {
+      font-family:'Playfair Display',serif;
+      font-size:36px; font-weight:700;
+      color:var(--gold); line-height:1;
+    }
+    .tl-title {
+      font-size:13px; font-weight:600;
+      color:var(--white); margin-bottom:8px;
+      letter-spacing:.05em;
+    }
+    .tl-desc { font-size:12px; line-height:1.75; color:var(--slate); }
+
+    /* ════ RESPONSIVE ════ */
+    @media(max-width:1100px){
+      .overview-grid { grid-template-columns:1fr; }
+      .team-grid { grid-template-columns:1fr 1fr; }
+      .values-grid { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:640px){
+      .team-grid,.values-grid,.overview-stats { grid-template-columns:1fr; }
+      .timeline::before { left:24px; }
+      .tl-item { grid-template-columns:0 32px 1fr; }
+      .tl-left { display:none; }
+      .tl-right { padding-left:20px; }
+      .tl-year { font-size:26px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mobile-nav">
+  <button class="mobile-nav-close">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Practice Areas</a>
+  <a href="contact.html">Contact</a>
+</div>
+<!--
+<div class="topbar">
+  <div class="tb-left">
+    <span>📞 +1 (234) 567-8900</span>
+    <span>✉ info@lexfirm.com</span>
+  </div>
+  <div class="tb-right">
+    <span>📍 123 Justice Way, New York, NY 10001</span>
+    <div class="tb-social"><a href="#">in</a><a href="#">fb</a><a href="#">tw</a></div>
+  </div>
+</div>
+-->
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-mark"><svg width="22" height="22" viewBox="0 0 36 36" fill="none"><line x1="18" y1="4" x2="18" y2="32" stroke="#c9a84c" stroke-width="1.5"/><line x1="6" y1="16" x2="30" y2="16" stroke="#c9a84c" stroke-width="1.5"/><circle cx="8" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/><circle cx="28" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/></svg></div>
+    <div class="logo-text"><span class="logo-name">ROBERT K. NDUNGU</span><span class="logo-sub">& Co. Advocates</span></div>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html" class="active">About Us</a>
+    <a href="services.html">Practice Areas</a>
+    <a href="about.html#team">Attorneys</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  
+  <button class="hamburger"><span></span><span></span><span></span></button>
+</header>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a> <span>/</span> About Us</div>
+  <h1 class="display-title fade-up">About <em>the Firm</em></h1>
+  <div class="gold-rule fade-up-2"></div>
+  <p class="lead fade-up-3">Built on integrity, expertise, and relentless dedication to our clients for over 25 years.</p>
+</div>
+
+<!-- FIRM OVERVIEW -->
+<section class="section bg-2">
+  <div class="overview-grid">
+    <div data-reveal>
+      <div class="eyebrow">Our Story</div>
+      <h2 class="display-title">Built on <em>Trust</em> & Excellence</h2>
+      <div class="gold-rule"></div>
+      <p class="lead">LexFirm was founded in 1998 with a singular mission: to provide every client with the quality of legal representation they deserve, regardless of the complexity of their case.</p>
+      <p class="lead" style="margin-top:16px">Over 25 years, we have served thousands of clients across New York and beyond, building a reputation as fearless advocates and trusted partners in times of legal uncertainty.</p>
+      <div class="quote-block">
+        <p>"Justice is not simply a word — it is the standard we hold ourselves to in every case and every courtroom we enter."</p>
+      </div>
+      <a href="contact.html" class="btn btn-gold">Schedule a Consultation</a>
+    </div>
+    <div data-reveal>
+      <div class="overview-stats">
+        <div class="os-card"><div class="os-num"><span data-count="25" data-suffix="+">25+</span></div><div class="os-lbl">Years of Practice</div></div>
+        <div class="os-card"><div class="os-num"><span data-count="40" data-suffix="+">40+</span></div><div class="os-lbl">Expert Attorneys</div></div>
+        <div class="os-card"><div class="os-num"><span data-count="1800">1800</span></div><div class="os-lbl">Cases Won</div></div>
+        <div class="os-card"><div class="os-num"><span data-count="98" data-suffix="%">98%</span></div><div class="os-lbl">Client Satisfaction</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section">
+  <div style="text-align:center;margin-bottom:60px" data-reveal>
+    <div class="eyebrow" style="justify-content:center">
+      <span style="width:36px;height:1px;background:var(--gold);display:block"></span>What We Stand For<span style="width:36px;height:1px;background:var(--gold);display:block"></span>
+    </div>
+    <h2 class="display-title" style="margin-top:16px">Our Core <em>Values</em></h2>
+  </div>
+  <div class="values-grid">
+    <div class="value-card" data-reveal>
+      <div class="vc-icon"><svg viewBox="0 0 28 28" fill="none"><path d="M14 3l2 7h7l-6 4 2 7-5-4-5 4 2-7-6-4h7z" stroke="currentColor" stroke-width="1.5"/></svg></div>
+      <div class="vc-title">Integrity</div>
+      <div class="vc-desc">We uphold the highest ethical standards in every case and every client interaction. Honesty and transparency are non-negotiable values at LexFirm.</div>
+    </div>
+    <div class="value-card" data-reveal>
+      <div class="vc-icon"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="10" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M5 25c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="currentColor" stroke-width="1.5"/></svg></div>
+      <div class="vc-title">Client Focus</div>
+      <div class="vc-desc">Every decision we make begins with the client's best interests. We listen, understand, and fight for outcomes that truly matter to the people we serve.</div>
+    </div>
+    <div class="value-card" data-reveal>
+      <div class="vc-icon"><svg viewBox="0 0 28 28" fill="none"><rect x="5" y="7" width="18" height="14" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M9 13h10M9 17h6" stroke="currentColor" stroke-width="1.5"/></svg></div>
+      <div class="vc-title">Professionalism</div>
+      <div class="vc-desc">Our attorneys bring meticulous preparation and commanding legal expertise to every case — inside and outside the courtroom.</div>
+    </div>
+    <div class="value-card" data-reveal>
+      <div class="vc-icon"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M14 5v9l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="vc-title">Confidentiality</div>
+      <div class="vc-desc">Client privacy is sacred. All communications are protected with strictest discretion, fully adhering to attorney-client privilege.</div>
+    </div>
+    <div class="value-card" data-reveal>
+      <div class="vc-icon"><svg viewBox="0 0 28 28" fill="none"><polyline points="4,15 10,21 24,7" stroke="currentColor" stroke-width="2.2"/></svg></div>
+      <div class="vc-title">Results-Driven</div>
+      <div class="vc-desc">We are relentlessly focused on achieving the best possible results. Our track record speaks to our skill, tenacity, and strategic approach.</div>
+    </div>
+    <div class="value-card" data-reveal>
+      <div class="vc-icon"><svg viewBox="0 0 28 28" fill="none"><path d="M14 4l2.5 7.5H24l-6.5 4.5 2.5 7.5L14 19l-6.5 4.5 2.5-7.5L3.5 11.5H11z" stroke="currentColor" stroke-width="1.5"/></svg></div>
+      <div class="vc-title">Excellence</div>
+      <div class="vc-desc">We continuously invest in education, technology, and strategy to stay at the forefront of our practice areas and deliver the best outcomes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section bg-2" id="team">
+  <div style="margin-bottom:56px" data-reveal>
+    <div class="eyebrow">Meet the Team</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px">
+      <h2 class="display-title">Our <em>Expert</em> Attorneys</h2>
+      <a href="contact.html" class="btn btn-outline" style="flex-shrink:0">Get in Touch</a>
+    </div>
+    <p class="lead" style="margin-top:16px">Each member of our team brings specialised expertise, proven results, and a genuine commitment to client success.</p>
+  </div>
+  <div class="team-grid">
+    <div class="attorney" data-reveal>
+      <div class="attorney-img-wrap">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&q=80" alt="Jonathan Harlow">
+        <div class="attorney-overlay"><a href="contact.html" class="ao-contact">Contact</a></div>
+      </div>
+      <div class="attorney-info">
+        <div class="attorney-name">Jonathan Harlow</div>
+        <div class="attorney-role">Managing Partner</div>
+        <div class="attorney-spec">Criminal Defense · 22 yrs experience</div>
+      </div>
+    </div>
+    <div class="attorney" data-reveal>
+      <div class="attorney-img-wrap">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&q=80" alt="Evelyn Reyes">
+        <div class="attorney-overlay"><a href="contact.html" class="ao-contact">Contact</a></div>
+      </div>
+      <div class="attorney-info">
+        <div class="attorney-name">Evelyn Reyes</div>
+        <div class="attorney-role">Senior Partner</div>
+        <div class="attorney-spec">Family Law · 18 yrs experience</div>
+      </div>
+    </div>
+    <div class="attorney" data-reveal>
+      <div class="attorney-img-wrap">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80" alt="Daniel Osei">
+        <div class="attorney-overlay"><a href="contact.html" class="ao-contact">Contact</a></div>
+      </div>
+      <div class="attorney-info">
+        <div class="attorney-name">Daniel Osei</div>
+        <div class="attorney-role">Corporate Law Partner</div>
+        <div class="attorney-spec">Business Law · 15 yrs experience</div>
+      </div>
+    </div>
+    <div class="attorney" data-reveal>
+      <div class="attorney-img-wrap">
+        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&q=80" alt="Catherine Nwosu">
+        <div class="attorney-overlay"><a href="contact.html" class="ao-contact">Contact</a></div>
+      </div>
+      <div class="attorney-info">
+        <div class="attorney-name">Catherine Nwosu</div>
+        <div class="attorney-role">Real Estate Partner</div>
+        <div class="attorney-spec">Real Estate Law · 12 yrs experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section">
+  <div style="text-align:center" data-reveal>
+    <div class="eyebrow" style="justify-content:center"><span style="width:36px;height:1px;background:var(--gold);display:block"></span>Our Journey<span style="width:36px;height:1px;background:var(--gold);display:block"></span></div>
+    <h2 class="display-title" style="margin-top:16px">A History of <em>Excellence</em></h2>
+  </div>
+  <div class="timeline">
+    <div class="tl-item" data-reveal>
+      <div class="tl-left"><div class="tl-year">1998</div></div>
+      <div class="tl-center"><div class="tl-dot"></div></div>
+      <div class="tl-right"><div class="tl-title">Founded in New York</div><div class="tl-desc">LexFirm opens with three founding partners and a mission to deliver accessible, high-quality legal counsel to all clients.</div></div>
+    </div>
+    <div class="tl-item" data-reveal>
+      <div class="tl-left"><div class="tl-title">First Major Victory</div><div class="tl-desc">A landmark criminal defense case puts LexFirm on the map and earns citywide recognition.</div></div>
+      <div class="tl-center"><div class="tl-dot"></div></div>
+      <div class="tl-right"><div class="tl-year">2004</div></div>
+    </div>
+    <div class="tl-item" data-reveal>
+      <div class="tl-left"><div class="tl-year">2010</div></div>
+      <div class="tl-center"><div class="tl-dot"></div></div>
+      <div class="tl-right"><div class="tl-title">Full-Service Expansion</div><div class="tl-desc">The firm expands to 20+ attorneys and adds Family Law, Real Estate, and Corporate practice areas.</div></div>
+    </div>
+    <div class="tl-item" data-reveal>
+      <div class="tl-left"><div class="tl-title">Law Firm of the Year</div><div class="tl-desc">Named New York Law Firm of the Year by the Metropolitan Bar Association for outstanding client outcomes.</div></div>
+      <div class="tl-center"><div class="tl-dot"></div></div>
+      <div class="tl-right"><div class="tl-year">2018</div></div>
+    </div>
+    <div class="tl-item" data-reveal>
+      <div class="tl-left"><div class="tl-year">2026</div></div>
+      <div class="tl-center"><div class="tl-dot"></div></div>
+      <div class="tl-right"><div class="tl-title">40+ Attorneys Today</div><div class="tl-desc">LexFirm continues to grow, now serving thousands of clients annually with over 40 specialised attorneys.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band" data-reveal>
+  <div>
+    <h2>Ready to Work with <em>Our Team?</em></h2>
+    <p>Book for consultation and let us fight for your rights.</p>
+  </div>
+  <a href="contact.html" class="btn btn-navy">Book For Consultation</a>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-about">
+      <a href="index.html" class="logo" style="display:inline-flex"><div class="logo-mark"><svg width="20" height="20" viewBox="0 0 36 36" fill="none"><line x1="18" y1="4" x2="18" y2="32" stroke="#c9a84c" stroke-width="1.5"/><line x1="6" y1="16" x2="30" y2="16" stroke="#c9a84c" stroke-width="1.5"/><circle cx="8" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/><circle cx="28" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/></svg></div><div class="logo-text" style="margin-left:12px"><span class="logo-name">ROBERT K. NDUNGU</span><span class="logo-sub">& Co. Advocates</span></div></a>
+      <p>A client-focused law firm providing exceptional legal representation across New York since 1998.</p>
+      <div class="footer-socials"><a href="#">in</a><a href="#">f</a><a href="#">tw</a></div>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="services.html">Practice Areas</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Practice Areas</h4><ul><li><a href="services.html#criminal">Criminal Defense</a></li><li><a href="services.html#family">Family Law</a></li><li><a href="services.html#realestate">Real Estate Law</a></li><li><a href="services.html#corporate">Corporate Law</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+12345678900">+254 722522441</a></li><li><a href="mailto:info@lexfirm.com">info@lexfirm.com</a></li><li><a href="#">Nairobi, Kenya</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 ROBERT K. NDUNGU & Co Advocates. All rights reserved.</span><span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span></div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

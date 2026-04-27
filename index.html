@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LexFirm — Trusted Legal Solutions</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ════════ HERO ════════ */
+    .hero {
+      position:relative; min-height:93vh;
+      display:flex; align-items:center;
+      overflow:hidden;
+      background:var(--navy);
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:
+        linear-gradient(105deg, rgba(11,24,38,.97) 52%, rgba(11,24,38,.55) 100%),
+        url('https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=1600&q=85') center/cover no-repeat;
+    }
+    /* subtle grain overlay */
+    .hero-bg::after {
+      content:''; position:absolute; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity:.4; mix-blend-mode:overlay; pointer-events:none;
+    }
+
+    /* Decorative vertical line */
+    .hero-rule {
+      position:absolute; left:64px; top:0; bottom:0; width:1px;
+      background:linear-gradient(to bottom, transparent, var(--gold-dim) 30%, var(--gold-dim) 70%, transparent);
+    }
+
+    .hero-inner {
+      position:relative; z-index:2;
+      padding:0 64px 0 100px;
+      max-width:780px;
+    }
+    .hero-tag {
+      display:inline-flex; align-items:center; gap:12px;
+      font-size:var(--fs-xs); letter-spacing:var(--ls-wide);
+      text-transform:uppercase; color:var(--gold);
+      margin-bottom:28px;
+    }
+    .hero-tag::before { content:''; width:40px; height:1px; background:var(--gold); }
+
+    .hero-title {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(44px,6.5vw,90px);
+      font-weight:700; line-height:1.05;
+      color:var(--white);
+      margin-bottom:0;
+    }
+    .hero-title .italic { font-style:italic; color:var(--gold); }
+    .hero-title .line2 { display:block; margin-top:6px; }
+
+    .hero-divider { width:60px; height:2px; background:var(--gold); margin:32px 0; }
+
+    .hero-sub {
+      font-size:15px; line-height:1.85;
+      color:var(--slate); max-width:480px;
+      margin-bottom:44px;
+    }
+    .hero-actions { display:flex; gap:16px; flex-wrap:wrap; }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position:absolute; bottom:36px; left:64px;
+      display:flex; align-items:center; gap:12px;
+      font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:var(--slate);
+      z-index:2;
+    }
+    .scroll-line {
+      width:1px; height:48px;
+      background:linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    /* ════════ STATS ════════ */
+    .stats-row {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      background:var(--navy-3);
+      border-top:1px solid var(--gold-dim);
+      border-bottom:1px solid var(--gold-dim);
+    }
+    .stat-cell {
+      padding:40px 32px; text-align:center;
+      border-right:1px solid var(--gold-dim);
+      position:relative;
+    }
+    .stat-cell:last-child { border-right:none; }
+    .stat-cell::after {
+      content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+      width:0; height:2px; background:var(--gold);
+      transition:width .4s var(--ease);
+    }
+    .stat-cell:hover::after { width:60%; }
+    .stat-num {
+      font-family:'Playfair Display',serif;
+      font-size:52px; font-weight:700; line-height:1;
+      color:var(--gold);
+    }
+    .stat-lbl {
+      font-size:10px; letter-spacing:var(--ls-wide);
+      text-transform:uppercase; color:var(--slate);
+      margin-top:8px;
+    }
+
+    /* ════════ FEATURES STRIP ════════ */
+    .features-strip {
+      background:var(--cream);
+      display:grid; grid-template-columns:repeat(4,1fr);
+      border-bottom:1px solid rgba(0,0,0,.08);
+    }
+    .feat {
+      padding:32px 28px;
+      border-right:1px solid rgba(0,0,0,.08);
+      display:flex; align-items:flex-start; gap:16px;
+      transition:background .3s;
+    }
+    .feat:last-child { border-right:none; }
+    .feat:hover { background:rgba(201,168,76,.06); }
+    .feat-icon {
+      width:42px; height:42px; flex-shrink:0;
+      color:var(--gold); margin-top:2px;
+    }
+    .feat-title {
+      font-size:var(--fs-xs); font-weight:600;
+      letter-spacing:var(--ls-med); text-transform:uppercase;
+      color:var(--navy); margin-bottom:6px;
+    }
+    .feat-desc { font-size:12px; line-height:1.7; color:#5a6878; }
+
+    /* ════════ ABOUT PREVIEW ════════ */
+    .about-grid {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:80px; align-items:center;
+    }
+    .about-visual { position:relative; }
+    .about-img {
+      width:100%; height:520px; object-fit:cover;
+      display:block;
+    }
+    .about-badge {
+      position:absolute; bottom:-28px; right:-28px;
+      background:var(--gold); color:var(--navy);
+      width:168px; height:168px;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      font-family:'Playfair Display',serif;
+    }
+    .badge-num { font-size:58px; font-weight:700; line-height:1; }
+    .badge-lbl { font-size:10px; letter-spacing:.18em; text-transform:uppercase; margin-top:4px; font-family:'Raleway',sans-serif; font-weight:600; }
+    .about-text .lead { max-width:100%; }
+    .about-list { list-style:none; margin:28px 0 36px; }
+    .about-list li {
+      display:flex; align-items:center; gap:14px;
+      font-size:13px; color:var(--slate);
+      margin-bottom:12px; font-weight:500;
+    }
+    .about-list li::before {
+      content:''; width:18px; height:1px;
+      background:var(--gold); flex-shrink:0;
+    }
+
+    /* ════════ PRACTICE AREAS ════════ */
+    .practice-grid {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:2px;
+    }
+    .pa-card {
+      background:var(--navy-4); padding:44px 32px;
+      position:relative; overflow:hidden;
+      cursor:pointer;
+      border-bottom:3px solid transparent;
+      transition:all .4s var(--ease);
+    }
+    .pa-card:hover {
+      background:var(--navy-2);
+      border-bottom-color:var(--gold);
+      transform:translateY(-5px);
+      box-shadow:0 20px 60px rgba(0,0,0,.4);
+      z-index:2;
+    }
+    .pa-number {
+      position:absolute; top:14px; right:20px;
+      font-family:'Playfair Display',serif;
+      font-size:72px; font-weight:700;
+      color:rgba(201,168,76,.06); line-height:1;
+      user-select:none;
+    }
+    .pa-icon { width:52px; height:52px; color:var(--gold); margin-bottom:24px; }
+    .pa-name {
+      font-family:'Playfair Display',serif;
+      font-size:22px; font-weight:600; color:var(--white);
+      margin-bottom:12px;
+    }
+    .pa-desc { font-size:12px; line-height:1.8; color:var(--slate); }
+    .pa-link {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:10px; letter-spacing:var(--ls-wide);
+      text-transform:uppercase; color:var(--gold);
+      text-decoration:none; margin-top:22px;
+      transition:gap .3s;
+    }
+    .pa-link:hover { gap:14px; }
+
+    /* ════════ WHY US ════════ */
+    .why-grid {
+      display:grid; grid-template-columns:1.1fr 1fr;
+      gap:80px; align-items:start;
+    }
+    .why-points { margin-top:36px; display:flex; flex-direction:column; gap:2px; }
+    .why-point {
+      display:flex; align-items:flex-start; gap:24px;
+      padding:28px 32px;
+      background:var(--navy-4);
+      border-left:3px solid transparent;
+      transition:border-color .35s, background .35s;
+    }
+    .why-point:hover { border-left-color:var(--gold); background:var(--navy-3); }
+    .wp-num {
+      font-family:'Playfair Display',serif;
+      font-size:32px; font-style:italic;
+      color:var(--gold); opacity:.6; line-height:1; flex-shrink:0;
+    }
+    .wp-title { font-size:13px; font-weight:600; color:var(--white); margin-bottom:6px; letter-spacing:.05em; }
+    .wp-desc { font-size:12px; line-height:1.75; color:var(--slate); }
+    .why-visual { position:relative; }
+    .why-img { width:100%; height:480px; object-fit:cover; }
+    .why-overlay-card {
+      position:absolute; top:32px; left:-32px;
+      background:var(--gold); color:var(--navy);
+      padding:28px 32px; width:220px;
+    }
+    .woc-num {
+      font-family:'Playfair Display',serif;
+      font-size:48px; font-weight:700; line-height:1;
+    }
+    .woc-lbl { font-size:10px; letter-spacing:.2em; text-transform:uppercase; margin-top:6px; font-weight:600; }
+
+    /* ════════ TESTIMONIALS ════════ */
+    .testi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+    .testi-card {
+      background:var(--navy-3);
+      padding:48px 36px;
+      position:relative;
+      border-top:2px solid transparent;
+      transition:border-color .35s;
+    }
+    .testi-card:hover { border-top-color:var(--gold); }
+    .testi-quote {
+      font-family:'Playfair Display',serif;
+      font-size:110px; line-height:.8;
+      color:rgba(201,168,76,.1);
+      position:absolute; top:20px; left:28px;
+      user-select:none;
+    }
+    .stars { color:var(--gold); letter-spacing:3px; font-size:13px; margin-bottom:18px; }
+    .testi-text {
+      font-family:'Playfair Display',serif;
+      font-size:17px; font-style:italic;
+      line-height:1.75; color:var(--cream);
+      margin-bottom:28px; position:relative; z-index:1;
+    }
+    .testi-author { display:flex; align-items:center; gap:14px; }
+    .ta-avatar {
+      width:46px; height:46px; border-radius:50%;
+      background:var(--gold);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Playfair Display',serif;
+      font-size:18px; font-weight:700;
+      color:var(--navy); flex-shrink:0;
+    }
+    .ta-name { font-size:13px; font-weight:600; color:var(--white); }
+    .ta-role { font-size:11px; color:var(--slate); margin-top:2px; letter-spacing:.05em; }
+
+    /* ════════ RESPONSIVE ════════ */
+    @media(max-width:1100px){
+      .hero-inner { padding-left:64px; }
+      .practice-grid { grid-template-columns:1fr 1fr; }
+      .stats-row { grid-template-columns:1fr 1fr; }
+      .features-strip { grid-template-columns:1fr 1fr; }
+      .feat:nth-child(2) { border-right:none; }
+      .testi-grid { grid-template-columns:1fr 1fr; }
+      .about-grid, .why-grid { grid-template-columns:1fr; }
+      .about-badge { bottom:16px; right:16px; }
+      .why-overlay-card { left:16px; }
+    }
+    @media(max-width:640px){
+      .hero-inner { padding-left:24px; padding-right:24px; }
+      .hero-rule,.scroll-hint { display:none; }
+      .practice-grid,.features-strip,.stats-row,.testi-grid { grid-template-columns:1fr; }
+      .feat { border-right:none; border-bottom:1px solid rgba(0,0,0,.08); }
+      .stat-cell { border-right:none; border-bottom:1px solid var(--gold-dim); }
+      .about-badge { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav">
+  <button class="mobile-nav-close">✕</button>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Practice Areas</a>
+  <a href="contact.html">Contact</a>
+</div>
+ 
+<!-- TOPBAR 
+<div class="topbar">
+  <div class="tb-left">
+    <span>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.09 5.18 2 2 0 015.07 3h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 10.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      +1 (234) 567-8900
+    </span>
+    <span>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      info@lexfirm.com
+    </span>
+  </div>
+  <div class="tb-right">
+    <span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      123 Justice Way, New York, NY 10001
+    </span>
+    <div class="tb-social">
+      <a href="#">in</a><a href="#">fb</a><a href="#">tw</a>
+    </div>
+  </div>
+  -->
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-mark">
+      <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+        <line x1="18" y1="4" x2="18" y2="32" stroke="#c9a84c" stroke-width="1.5"/>
+        <line x1="6" y1="16" x2="30" y2="16" stroke="#c9a84c" stroke-width="1.5"/>
+        <circle cx="8" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/>
+        <circle cx="28" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">ROBERT K. NDUNGU</span>
+      <span class="logo-sub">& Co. Advocates</span>
+    </div>
+  </a>
+  <nav>
+    <a href="index.html" class="active">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="services.html">Practice Areas</a>
+    <a href="about.html#team">Attorneys</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  
+  <button class="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-rule"></div>
+  <div class="hero-inner">
+    <div class="hero-tag fade-up">Trusted Legal Solutions Since 1998</div>
+    <h1 class="hero-title fade-up-2">
+      Defending <span class="italic">Rights.</span>
+      <span class="line2">Delivering <span class="italic">Justice.</span></span>
+    </h1>
+    <div class="hero-divider fade-up-3"></div>
+    <p class="hero-sub fade-up-3">We are a client-focused law firm dedicated to providing exceptional legal representation and achieving the best possible outcomes.</p>
+    <div class="hero-actions fade-up-4">
+      <a href="contact.html" class="btn btn-gold">Book Consultation</a>
+      <a href="services.html" class="btn btn-outline">Our Practice Areas</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ══════════ STATS ══════════ -->
+<div class="stats-row">
+  <div class="stat-cell" data-reveal>
+    <div class="stat-num"><span data-count="25" data-suffix="+">0+</span></div>
+    <div class="stat-lbl">Years of Experience</div>
+  </div>
+  <div class="stat-cell" data-reveal>
+    <div class="stat-num"><span data-count="1800" data-suffix="">0</span></div>
+    <div class="stat-lbl">Cases Won</div>
+  </div>
+  <div class="stat-cell" data-reveal>
+    <div class="stat-num"><span data-count="98" data-suffix="%">0%</span></div>
+    <div class="stat-lbl">Client Satisfaction</div>
+  </div>
+  <div class="stat-cell" data-reveal>
+    <div class="stat-num"><span data-count="40" data-suffix="+">0+</span></div>
+    <div class="stat-lbl">Expert Attorneys</div>
+  </div>
+</div>
+
+<!-- ══════════ FEATURES ══════════ -->
+<div class="features-strip">
+  <div class="feat">
+    <svg class="feat-icon" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="16" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M8 38c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="currentColor" stroke-width="1.5"/></svg>
+    <div>
+      <div class="feat-title">Client Focused</div>
+      <div class="feat-desc">We centre every case around your unique legal needs and best interests.</div>
+    </div>
+  </div>
+  <div class="feat">
+    <svg class="feat-icon" viewBox="0 0 44 44" fill="none"><path d="M22 6l3.5 11H37l-9 6.5 3.5 11L22 28l-9.5 6.5 3.5-11L6 17h11.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+    <div>
+      <div class="feat-title">Experienced Attorneys</div>
+      <div class="feat-desc">Decades of combined expertise across every major practice area.</div>
+    </div>
+  </div>
+  <div class="feat">
+    <svg class="feat-icon" viewBox="0 0 44 44" fill="none"><polyline points="7,22 18,33 37,11" stroke="currentColor" stroke-width="2.2"/></svg>
+    <div>
+      <div class="feat-title">Proven Results</div>
+      <div class="feat-desc">We are committed to achieving the best possible outcome every time.</div>
+    </div>
+  </div>
+  <div class="feat">
+    <svg class="feat-icon" viewBox="0 0 44 44" fill="none"><rect x="12" y="10" width="20" height="26" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M17 19h10M17 25h7" stroke="currentColor" stroke-width="1.5"/><path d="M22 36v4M17 40h10" stroke="currentColor" stroke-width="1.5"/></svg>
+    <div>
+      <div class="feat-title">Full Confidentiality</div>
+      <div class="feat-desc">Your case is handled with strict discretion under attorney-client privilege.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ABOUT PREVIEW ══════════ -->
+<section class="section bg-2">
+  <div class="about-grid">
+    <div class="about-visual" data-reveal>
+      <img class="about-img" src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80" alt="LexFirm attorneys">
+      <div class="about-badge">
+        <div class="badge-num">25</div>
+        <div class="badge-lbl">Years of<br>Excellence</div>
+      </div>
+    </div>
+    <div data-reveal>
+      <div class="eyebrow">About Our Firm</div>
+      <h2 class="display-title">A Legacy of <em>Legal</em> Excellence</h2>
+      <div class="gold-rule"></div>
+      <p class="lead" style="max-width:100%">Founded in 1998, LexFirm has grown into one of New York's most respected legal practices. We combine deep expertise with genuine compassion for every client we serve.</p>
+      <ul class="about-list" style="margin-top:24px">
+        <li>Over 40 specialists across all practice areas</li>
+        <li>Rigorous ethical standards and full confidentiality</li>
+        <li>Personalised strategy for every unique case</li>
+        <li>Transparent communication at every stage</li>
+      </ul>
+      <a href="about.html" class="btn btn-gold">Meet Our Team</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PRACTICE AREAS ══════════ -->
+<section class="section" style="padding-bottom:0">
+  <div style="margin-bottom:56px" data-reveal>
+    <div class="eyebrow">What We Do</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px">
+      <h2 class="display-title">Our <em>Practice</em> Areas</h2>
+      <a href="services.html" class="btn btn-outline" style="flex-shrink:0">View All Services</a>
+    </div>
+  </div>
+</section>
+<div class="practice-grid">
+  <div class="pa-card" data-reveal>
+    <div class="pa-number">01</div>
+    <svg class="pa-icon" viewBox="0 0 52 52" fill="none"><rect x="8" y="22" width="36" height="24" stroke="currentColor" stroke-width="1.5"/><path d="M16 22V14a10 10 0 0120 0v8" stroke="currentColor" stroke-width="1.5"/><circle cx="26" cy="34" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg>
+    <div class="pa-name">Criminal Defense</div>
+    <div class="pa-desc">Aggressive representation for charges of all types, from misdemeanours to serious felonies.</div>
+    <a href="services.html#criminal" class="pa-link">Learn More →</a>
+  </div>
+  <div class="pa-card" data-reveal>
+    <div class="pa-number">02</div>
+    <svg class="pa-icon" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="15" r="7" stroke="currentColor" stroke-width="1.5"/><circle cx="13" cy="34" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="39" cy="34" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M26 22v8M18 38l-5 3M34 38l5 3" stroke="currentColor" stroke-width="1.5"/></svg>
+    <div class="pa-name">Family Law</div>
+    <div class="pa-desc">Compassionate legal support for divorce, custody, adoption and all family matters.</div>
+    <a href="services.html#family" class="pa-link">Learn More →</a>
+  </div>
+  <div class="pa-card" data-reveal>
+    <div class="pa-number">03</div>
+    <svg class="pa-icon" viewBox="0 0 52 52" fill="none"><rect x="8" y="18" width="36" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M18 18v-5a8 8 0 0116 0v5" stroke="currentColor" stroke-width="1.5"/><path d="M17 30h18M17 36h10" stroke="currentColor" stroke-width="1.5"/></svg>
+    <div class="pa-name">Corporate Law</div>
+    <div class="pa-desc">Comprehensive legal services for businesses, startups, and established enterprises.</div>
+    <a href="services.html#corporate" class="pa-link">Learn More →</a>
+  </div>
+  <div class="pa-card" data-reveal>
+    <div class="pa-number">04</div>
+    <svg class="pa-icon" viewBox="0 0 52 52" fill="none"><path d="M8 44h36M12 44V28l14-14 14 14v16" stroke="currentColor" stroke-width="1.5"/><rect x="21" y="32" width="10" height="12" stroke="currentColor" stroke-width="1.5"/></svg>
+    <div class="pa-name">Real Estate Law</div>
+    <div class="pa-desc">Expert guidance for property transactions, disputes, and all real estate matters.</div>
+    <a href="services.html#realestate" class="pa-link">Learn More →</a>
+  </div>
+</div>
+
+<!-- ══════════ WHY CHOOSE US ══════════ -->
+<section class="section bg-3">
+  <div class="why-grid">
+    <div>
+      <div class="eyebrow" data-reveal>Why Choose Us</div>
+      <h2 class="display-title" data-reveal>The LexFirm <em>Advantage</em></h2>
+      <div class="why-points" style="margin-top:36px">
+        <div class="why-point" data-reveal>
+          <div class="wp-num">01</div>
+          <div>
+            <div class="wp-title">Experienced Legal Team</div>
+            <div class="wp-desc">Our attorneys bring decades of specialised courtroom and advisory experience to every case we take on.</div>
+          </div>
+        </div>
+        <div class="why-point" data-reveal>
+          <div class="wp-num">02</div>
+          <div>
+            <div class="wp-title">Absolute Confidentiality</div>
+            <div class="wp-desc">Every communication is protected by attorney-client privilege. Your privacy is our legal and ethical obligation.</div>
+          </div>
+        </div>
+        <div class="why-point" data-reveal>
+          <div class="wp-num">03</div>
+          <div>
+            <div class="wp-title">Proven Results</div>
+            <div class="wp-desc">Over 1,800 cases won. We pursue every avenue to secure the best possible outcome for our clients.</div>
+          </div>
+        </div>
+        <div class="why-point" data-reveal>
+          <div class="wp-num">04</div>
+          <div>
+            <div class="wp-title">Transparent Fees</div>
+            <div class="wp-desc">Clear, upfront fee structures with no surprises. We discuss all costs before we begin any work.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="why-visual" data-reveal>
+      <div class="why-overlay-card">
+        <div class="woc-num">98%</div>
+        <div class="woc-lbl">Client<br>Satisfaction<br>Rate</div>
+      </div>
+      <img class="why-img" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=700&q=80" alt="Courtroom">
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TESTIMONIALS ══════════ -->
+<section class="section">
+  <div style="text-align:center;margin-bottom:60px" data-reveal>
+    <div class="eyebrow" style="justify-content:center">
+      <span style="width:36px;height:1px;background:var(--gold);display:block"></span>
+      Client Stories
+      <span style="width:36px;height:1px;background:var(--gold);display:block"></span>
+    </div>
+    <h2 class="display-title" style="margin-top:16px">What Our <em>Clients</em> Say</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card" data-reveal>
+      <div class="testi-quote">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">LexFirm navigated my complex business dispute with exceptional skill. Their strategic approach saved my company. I couldn't have asked for better representation.</p>
+      <div class="testi-author">
+        <div class="ta-avatar">M</div>
+        <div>
+          <div class="ta-name">Michael Torres</div>
+          <div class="ta-role">CEO, Torres Enterprises</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card" data-reveal>
+      <div class="testi-quote">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">During the most difficult time of my life, the family law team provided not just legal expertise but genuine compassion. They fought hard for my children and me.</p>
+      <div class="testi-author">
+        <div class="ta-avatar">S</div>
+        <div>
+          <div class="ta-name">Sarah Mitchell</div>
+          <div class="ta-role">Family Law Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card" data-reveal>
+      <div class="testi-quote">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">The criminal defense team fought tirelessly. Their preparation, knowledge, and commanding courtroom presence were truly remarkable. All charges were dismissed.</p>
+      <div class="testi-author">
+        <div class="ta-avatar">J</div>
+        <div>
+          <div class="ta-name">James Okonkwo</div>
+          <div class="ta-role">Criminal Defense Client</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<div class="cta-band" data-reveal>
+  <div>
+    <h2>Need Legal Help? <em>Contact Us Today.</em></h2>
+    <p>Book a free, confidential consultation with one of our expert attorneys.</p>
+  </div>
+  <a href="contact.html" class="btn btn-navy">Book For Consultation</a>
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-about">
+      <a href="index.html" class="logo" style="display:inline-flex">
+        <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 36 36" fill="none"><line x1="18" y1="4" x2="18" y2="32" stroke="#c9a84c" stroke-width="1.5"/><line x1="6" y1="16" x2="30" y2="16" stroke="#c9a84c" stroke-width="1.5"/><circle cx="8" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/><circle cx="28" cy="24" r="4" stroke="#c9a84c" stroke-width="1.2"/></svg></div>
+        <div class="logo-text" style="margin-left:12px"><span class="logo-name">ROBERT K. NDUNGU</span><span class="logo-sub">& Co. Advocates</span></div>
+      </a>
+      <p>A client-focused law firm providing exceptional legal representation across New York since 1998.</p>
+      <div class="footer-socials"><a href="#">in</a><a href="#">f</a><a href="#">tw</a></div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="services.html">Practice Areas</a></li>
+        <li><a href="about.html#team">Our Attorneys</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Practice Areas</h4>
+      <ul>
+        <li><a href="services.html#criminal">Criminal Defense</a></li>
+        <li><a href="services.html#family">Family Law</a></li>
+        <li><a href="services.html#realestate">Real Estate Law</a></li>
+        <li><a href="services.html#corporate">Corporate Law</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+12345678900">+254 722522441</a></li>
+        <li><a href="mailto:info@lexfirm.com"></a></a></li>
+        <li><a href="#">Utawala Complex,Eastern Bypass,Nairobi</a></li>
+        <li><a href="#">Mon – Fri: 8:30am – 5pm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 RPBERT K. NDUNGU & Co. Advocates. All rights reserved.</span>
+    <span><a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Terms of Service</a></span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
